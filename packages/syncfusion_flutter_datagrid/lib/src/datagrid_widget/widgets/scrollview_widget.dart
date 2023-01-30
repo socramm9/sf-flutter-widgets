@@ -25,7 +25,8 @@ class ScrollViewWidget extends StatefulWidget {
   const ScrollViewWidget(
       {required this.width,
       required this.height,
-      required this.dataGridStateDetails});
+      required this.dataGridStateDetails,
+      required this.onKeyOperation});
 
   /// The parent width of the datagid.
   final double width;
@@ -35,6 +36,8 @@ class ScrollViewWidget extends StatefulWidget {
 
   /// Holds the [DataGridStateDetails].
   final DataGridStateDetails dataGridStateDetails;
+
+  final void Function(FocusNode focusNode, RawKeyEvent keyEvent) onKeyOperation;
 
   @override
   State<StatefulWidget> createState() => _ScrollViewWidgetState();
@@ -848,6 +851,7 @@ class _ScrollViewWidgetState extends State<ScrollViewWidget> {
 
   KeyEventResult _handleKeyOperation(
       FocusNode focusNode, RawKeyEvent keyEvent) {
+    widget.onKeyOperation(focusNode, keyEvent);
     final DataGridConfiguration dataGridConfiguration = _dataGridConfiguration;
     final CurrentCellManager currentCell = dataGridConfiguration.currentCell;
 
@@ -1083,6 +1087,7 @@ class _ScrollViewWidgetState extends State<ScrollViewWidget> {
     return _dataGridConfiguration.isDesktop
         ? Focus(
             focusNode: _dataGridFocusNode,
+            autofocus: true,
             onKey: _handleKeyOperation,
             child: addContainer())
         : addContainer();

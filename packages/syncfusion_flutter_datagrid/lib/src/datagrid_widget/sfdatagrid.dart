@@ -461,11 +461,14 @@ class SfDataGrid extends StatefulWidget {
     this.onFilterChanging,
     this.onFilterChanged,
     this.checkboxShape,
+    required this.onKeyOperation,
   })  : assert(frozenColumnsCount >= 0),
         assert(footerFrozenColumnsCount >= 0),
         assert(frozenRowsCount >= 0),
         assert(footerFrozenRowsCount >= 0),
         super(key: key);
+
+  final void Function(FocusNode focusNode, RawKeyEvent keyEvent) onKeyOperation;
 
   /// The height of each row except the column header.
   ///
@@ -2928,6 +2931,7 @@ class SfDataGridState extends State<SfDataGrid>
       }
 
       return ScrollViewWidget(
+        onKeyOperation: widget.onKeyOperation,
         width: measuredWidth,
         height: measuredHeight,
         dataGridStateDetails: _dataGridStateDetails!,
